@@ -5,10 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ web_title }} - {{ web_tagline }} {% endblock %}</title>
-
-    <!-- Tailwind CSS -->
+    <link rel="icon" href="{% static 'logo/favicon.ico' %}">
+    <link rel="icon" type="image/png" href="{% static 'logo/favicon.ico' %}">
+    <meta name="description" content="{{ web_tagline }}">
+    <meta name="author" content="{{ web_author|default:'HIMADIE UNHAS' }}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ web_title }} - {{ web_tagline }}">
+    <meta property="og:description" content="{{ web_tagline }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% static 'logo/favicon.ico' %}">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ web_title }} - {{ web_tagline }}">
+    <meta name="twitter:description" content="{{ web_tagline }}">
+    <meta name="twitter:image" content="{% static 'logo/favicon.ico' %}">
     <script src="https://cdn.tailwindcss.com"></script>
-
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
