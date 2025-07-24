@@ -1,0 +1,42 @@
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/80 shadow-sm backdrop-blur-sm py-0 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <a href="{% url 'index' %}" class="text-2xl font-bold text-unhas hover:text-unhas-dark transition-colors flex items-center" aria-label="Beranda HIMADIE">
+                        <span class="text-unhas mr-2">HIMADIE</span>
+                        <span class="text-gray-500">UNHAS</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-6">
+                    <a href="{% url 'index' %}" class="nav-link text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-200" data-section="home">Home</a>
+                    <a href="{% url 'article_list' %}" class="nav-link text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-200" data-section="posts">Artikel</a>
+                    <a href="{{ web_url }}#team" class="nav-link text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-200" data-section="categories">Pengurus</a>
+                    <a href="{% url 'page_detail' slug='about' %}" class="nav-link text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-200" data-section="about">About</a>
+                    <a href="{% url 'page_detail' slug='contact' %}" class="nav-link text-gray-700 hover:text-primary px-3 py-2 rounded-md text-base font-medium transition-all duration-200" data-section="contact">Contact</a>
+                    <a href="/admin/" class="ml-6 bg-unhas hover:bg-secondary text-white px-5 py-2 rounded-full font-semibold shadow transition-all duration-200"><i class="ri-seo-fill"></i>Get Started</a>
+
+                </div>
+            </div>
+
+            <div class="md:hidden flex items-center">
+                <button type="button" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md p-2" aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Buka menu utama</span>
+                    <i class="fas fa-bars text-xl transition-transform duration-300" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100 shadow-inner">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="{% url 'index' %}" class="mobile-nav-link text-gray-700 hover:text-primary block px-3 py-2 text-base font-medium rounded-md transition-colors duration-200" data-section="home">Home</a>
+            <a href="/" class="mobile-nav-link text-gray-700 hover:text-primary block px-3 py-2 text-base font-medium rounded-md transition-colors duration-200" data-section="posts">Artikel</a>
+            <a href="{% url 'page_detail' slug='about' %}" class="mobile-nav-link text-gray-700 hover:text-primary block px-3 py-2 text-base font-medium rounded-md transition-colors duration-200" data-section="about">About</a>
+            <a href="{% url 'page_detail' slug='contact' %}" class="mobile-nav-link text-gray-700 hover:text-primary block px-3 py-2 text-base font-medium rounded-md transition-colors duration-200" data-section="contact">Contact</a>
+        </div>
+    </div>
+</nav>

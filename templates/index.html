@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ web_title }} - {{ web_tagline }} {% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1e40af',
+                        unhas: '#BC0000',
+                    }
+                }
+            }
+        }
+    </script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    {% include "partials/navbar.html" %}
+
+    {% block content %}
+    <section id="home" class="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white py-24 flex items-center overflow-hidden mt-20">
+
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+
+        <div id="hero-slider" class="absolute inset-0 z-0 ">
+            <div class="slider-item absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ease-in-out opacity-100">
+                <img src="https://feb.unm.ac.id/media/assets/gifheader.gif" alt="Slider Image 1" class="w-full h-full object-cover brightness-75">
+            </div>
+
+            <div class="slider-item absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ease-in-out opacity-0">
+                <img src="https://www.unhas.ac.id/wp-content/uploads/2024/02/Gedung-Rektorat.webp" alt="Slider Image 2" class="w-full h-full object-cover brightness-75">
+            </div>
+
+            <div class="slider-item absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ease-in-out opacity-0">
+                <img src="https://feb.unm.ac.id/media/assets/gifheader.gif" alt="Slider Image 3" class="w-full h-full object-cover brightness-75">
+            </div>
+        </div>
+
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center">
+                <div class="animate-fade-in-up">
+                    <h1 class="text-4xl md:text-4xl lg:text-4xl font-bold mb-3 leading-tight">
+                        Himpunan Mahasiswa Doktor Ilmu Ekonomi
+                    </h1>
+                    <p class="text-xl md:text-1xl mb-8 text-gray-200 max-w-2xl mx-auto">
+                        Wadah kolaborasi, inovasi, dan pengembangan keilmuan bagi mahasiswa doktor Ilmu Ekonomi Universitas Hasanuddin
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#posts" class="bg-unhas hover:bg-yellow-600 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-book-open mr-2"></i>
+                            Read More
+                        </a>
+                        <a href="{% url 'page_detail' slug='about' %}" class="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-user mr-2"></i>
+                            Tentang Kami
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
+            <span class="slider-dot w-3 h-3 bg-white rounded-full cursor-pointer opacity-50 hover:opacity-100 transition-opacity" data-slide="0"></span>
+            <span class="slider-dot w-3 h-3 bg-white rounded-full cursor-pointer opacity-50 hover:opacity-100 transition-opacity" data-slide="1"></span>
+            <span class="slider-dot w-3 h-3 bg-white rounded-full cursor-pointer opacity-50 hover:opacity-100 transition-opacity" data-slide="2"></span>
+        </div>
+    </section>
+
+    <!-- Posts Section -->
+    <section id="posts" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 px-4">
+                <div class="flex flex-col items-center justify-center gap-3 flex-wrap md:flex-nowrap">
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900">Artikel Terbaru</h2>
+                    <div class="w-24 h-1 bg-primary rounded-full mt-2"></div>
+                </div>
+                <p class="text-base md:text-xl text-gray-600 max-w-2xl mx-auto mt-4">
+                    Kumpulan artikel pilihan yang telah kami kurasi khusus untuk Anda
+                </p>
+            </div>
+            
+            
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {% for article in latest_articles %}
+                <article class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+                    <div class="h-48 relative bg-gray-200">
+                        {% if article.featured_image %}
+                            <img src="{{ article.featured_image.url }}" alt="{{ article.title }}" class="object-cover w-full h-full">
+                            <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                        {% else %}
+                            <div class="h-48 bg-gradient-to-br from-blue-400 to-purple-500"></div>
+                            <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                        {% endif %}
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
+                                {{ article.category.name }}
+                            </span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <i class="fas fa-laptop-code text-3xl"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 hover:text-primary transition-colors">
+                            <a href="{{ article.get_absolute_url }}">{{ article.title|truncatechars:30 }}</a>
+                        </h3>
+                        <p class="text-gray-600 mb-4">{{ article.excerpt|default:article.content|striptags|truncatewords:10 }}</p>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span><i class="fas fa-calendar mr-1"></i> {{ article.published_date|date:"d M Y" }}</span>
+                            <span><i class="fas fa-clock mr-1"></i> {{ article.content|wordcount }} words</span>
+                        </div>
+                        <div class="mt-4">
+                            <a href="{{ article.get_absolute_url }}" class="text-primary hover:text-secondary font-semibold transition-colors">
+                                Baca Selengkapnya <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% empty %}
+                <p>Tidak ada artikel terbaru.</p>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-12 ">
+                <a href="#" class="bg-primary hover:bg-secondary text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-plus mr-2"></i>
+                    Lihat Artikel Lainnya
+                </a>
+            </div>
+        </div>
+    </section>
+    <section id="team" class="py-2 bg-gradient-to-br from-gray-50 via-white to-blue-50 relative overflow-hidden">
+  <!-- Decorative SVG wave at the top -->
+  <div class="absolute top-0 left-0 w-full -z-10">
+    <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#3b82f6" fill-opacity="0.05" d="M0,0 C480,100 960,0 1440,100 L1440,0 L0,0 Z"></path></svg>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex text-center flex-col items-center justify-center gap-3 flex-wrap md:flex-nowrap">
+        <h2 class="text-3xl md:text-5xl font-bold text-gray-900">Pengurus</h2>
+        <div class="w-24 h-1 bg-primary rounded-full mt-2"></div>
+        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">Himpunan Mahasiswa Doktor Ilmu Ekonomi Universitas Hasanuddin</p>
+    </div>
+    <div class="relative">
+      <!-- Arrows always visible, with animation -->
+      <button type="button" id="team-scroll-left" class="flex items-center justify-center absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full w-12 h-12 text-primary hover:bg-primary hover:text-white transition-all duration-200 border-2 border-primary animate-bounce-x" aria-label="Geser kiri">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button type="button" id="team-scroll-right" class="flex items-center justify-center absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full w-12 h-12 text-primary hover:bg-primary hover:text-white transition-all duration-200 border-2 border-primary animate-bounce-x" aria-label="Geser kanan">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <div id="team-slider" class="flex overflow-x-auto space-x-8 pb-4 snap-x snap-mandatory scroll-smooth scrollbar-hide">
+        {% for team_member in team_members %}
+        <div class="bg-white rounded-3xl shadow-xl p-8 flex-shrink-0 flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl min-w-[240px] sm:min-w-[270px] max-w-xs snap-center border-2 mt-12 hover:border-primary group">
+          {% if team_member.image %}
+            <img src="{{ team_member.image.url }}" alt="{{ team_member.nama }}" class="w-32 h-32 rounded-full object-cover mb-4 ring-4 ring-primary ring-opacity-50 shadow-lg group-hover:scale-105 transition-transform duration-300">
+          {% else %}
+            <div class="w-32 h-32 rounded-full bg-gray-200 mb-4 flex items-center justify-center text-4xl text-gray-400 ring-4 ring-primary ring-opacity-50">
+              <i class="fas fa-user"></i>
+            </div>
+          {% endif %}
+          <h3 class="text-xl font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors">{{ team_member.nama }}</h3>
+          <p class="text-primary mb-1 capitalize text-base font-semibold">{{ team_member.jabatan }}</p>
+          <p class="text-gray-500 mb-2 text-xs sm:text-sm italic">Angkatan {{ team_member.angkatan }}</p>
+          <!-- Social icons (optional) -->
+          <div class="flex space-x-2 mt-2">
+            <a href="#" class="group relative flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 hover:bg-primary transition-colors shadow hover:shadow-lg" title="LinkedIn" aria-label="LinkedIn" tabindex="0">
+              <i class="fab fa-linkedin text-gray-400 group-hover:text-white text-lg"></i>
+            </a>
+            <a href="#" class="group relative flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 hover:bg-pink-500 transition-colors shadow hover:shadow-lg" title="Instagram" aria-label="Instagram" tabindex="0">
+              <i class="fab fa-instagram text-gray-400 group-hover:text-white text-lg"></i>
+            </a>
+            <a href="#" class="group relative flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 hover:bg-green-600 transition-colors shadow hover:shadow-lg" title="Google Scholar" aria-label="Google Scholar" tabindex="0">
+              <i class="fas fa-graduation-cap text-gray-400 group-hover:text-white text-lg"></i>
+            </a>
+            <a href="#" class="group relative flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 hover:bg-[#A6CE39] transition-colors shadow hover:shadow-lg" title="ORCID" aria-label="ORCID" tabindex="0">
+              <i class="fab fa-orcid text-gray-400 group-hover:text-white text-lg"></i>
+            </a>
+          </div>
+        </div>
+        {% empty %}
+        <p class="col-span-full text-center text-gray-400">Belum ada anggota tim.</p>
+        {% endfor %}
+      </div>
+      <!-- Progress bar (optional) -->
+    </div>
+  </div>
+    </section>
+
+
+    {% endblock %}
+
+    {% include "partials/footers.html" %}
+    <script src="{% static 'js/himadie.js' %}"></script>
+
+    {% block extra_script %}{% endblock %}
+</body>
+</html>

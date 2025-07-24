@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MyBlog - Berbagi Inspirasi & Pengetahuan{% endblock %}</title>
+    {% block extra_head %}{% endblock %}
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#1e40af',
+                        unhas: '#BC0000',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    {% include "partials/navbar.html" %}
+
+    {% block content %}{% endblock %}
+
+    {% include "partials/footers.html" %}
+
+    <script src="{% static 'js/himadie.js' %}"></script>
+
+    {% block extra_script %}{% endblock %}
+</body>
+</html>

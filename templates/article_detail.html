@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} - {{ web_title }} {% endblock %}
+{% block extra_head %}<meta name="description" content="{{ article.excerpt|default:article.content|striptags|truncatewords:25 }}">
+    <meta name="author" content="{{ article.author.get_full_name|default:article.author.username|default:web_author }}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ article.title }} - {{ web_title }}">
+    <meta property="og:description" content="{{ article.excerpt|default:article.content|striptags|truncatewords:25 }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    {% if article.featured_image %}<meta property="og:image" content="{{ web_url }}{{ article.featured_image.url }}">
+    {% endif %}<meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ article.title }} - {{ web_title }}">
+    <meta name="twitter:description" content="{{ article.excerpt|default:article.content|striptags|truncatewords:25 }}">
+    {% if article.featured_image %}<meta name="twitter:image" content="{{ article.featured_image.url }}">
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<section id="article-detail" class="min-h-screen bg-gradient-to-br mt-16 from-slate-50 via-white to-indigo-50/30 relative">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-[0.02]">
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(99,102,241,0.15) 1px, transparent 0); background-size: 20px 20px;"></div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-br from-indigo-200/20 to-cyan-200/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-8">
+            <a href="/" class="hover:text-indigo-600 transition-colors">Home</a>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            {% if article.category %}
+            <a href="#" class="hover:text-indigo-600 transition-colors">{{ article.category.name }}</a>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            {% endif %}
+            <span class="text-gray-900">{{ article.title|truncatechars:30 }}</span>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- MAIN CONTENT (3/4) -->
+            <main class="lg:col-span-3">
+                <!-- Article Header -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl shadow-indigo-500/10 border border-white/20 overflow-hidden mb-8">
+                    <!-- Featured Image -->
+                    {% if article.featured_image %}
+                    <div class="relative h-80 md:h-96 overflow-hidden">
+                        <img src="{{ article.featured_image.url }}" 
+                             alt="{{ article.title }}" 
+                             class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                        
+                        <!-- Category Badge -->
+                        {% if article.category %}
+                        <div class="absolute top-6 left-6">
+                            <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600/90 text-white backdrop-blur-sm">
+                                <i class="fas fa-folder mr-2"></i>
+                                {{ article.category.name }}
+                            </span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Article Info -->
+                    <div class="p-8 md:p-12">
+                        <div class="text-center mb-8">
+                            <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight tracking-tight">
+                                {{ article.title }}
+                            </h1>
+                            
+                            {% if article.excerpt %}
+                            <p class="text-xl md:text-2xl text-gray-600 leading-relaxed font-light max-w-4xl mx-auto">
+                                {{ article.excerpt }}
+                            </p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Meta Info -->
+                        <div class="flex flex-wrap justify-center items-center gap-6 text-gray-500 mb-8">
+                            {% if article.author %}
+                            <div class="flex items-center gap-2 bg-gray-50 rounded-full px-4 py-2 hover:bg-gray-100 transition-colors">
+                                <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-white text-xs"></i>
+                                </div>
+                                <span class="font-medium">{{ article.author.get_full_name|default:article.author.username }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if article.published_date %}
+                            <div class="flex items-center gap-2 bg-gray-50 rounded-full px-4 py-2 hover:bg-gray-100 transition-colors">
+                                <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-calendar-alt text-white text-xs"></i>
+                                </div>
+                                <span class="font-medium">{{ article.published_date|date:"d M Y" }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="flex items-center gap-2 bg-gray-50 rounded-full px-4 py-2 hover:bg-gray-100 transition-colors">
+                                <div class="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-eye text-white text-xs"></i>
+                                </div>
+                                <span class="font-medium">{{ article.views_count }} views</span>
+                            </div>
+                        </div>
+
+                        <!-- Social Share -->
+                        <div class="flex justify-center gap-4 mb-8">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" rel="noopener" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25">
+                              <i class="fab fa-facebook-f"></i>
+                              <span class="hidden sm:inline">Share</span>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ article.title }}" target="_blank" rel="noopener" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-sky-500/25">
+                              <i class="fab fa-twitter"></i>
+                              <span class="hidden sm:inline">Tweet</span>
+                            </a>
+                            <a href="https://wa.me/?text={{ article.title }}%20{{ request.build_absolute_uri }}" target="_blank" rel="noopener" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/25">
+                              <i class="fab fa-whatsapp"></i>
+                              <span class="hidden sm:inline">WhatsApp</span>
+                            </a>
+                          </div>
+
+                        <!-- Article Content -->
+                        <article class="prose prose-xl max-w-none text-gray-800 leading-relaxed">
+                            <div class="first-letter:text-7xl first-letter:font-bold first-letter:text-indigo-600 first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:leading-none">
+                                {{ article.content|safe }}
+                            </div>
+                        </article>
+
+                        <!-- Article Footer -->
+                        <div class="mt-16 pt-8 border-t border-gray-200">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-gray-500">
+                                <div class="flex flex-col gap-2">
+                                    <span class="flex items-center gap-2">
+                                        <i class="fas fa-plus-circle text-green-500"></i>
+                                        Dibuat: {{ article.created_at|date:"d M Y H:i" }}
+                                    </span>
+                                    <span class="flex items-center gap-2">
+                                        <i class="fas fa-edit text-blue-500"></i>
+                                        Update terakhir: {{ article.updated_at|date:"d M Y H:i" }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 capitalize">
+                                        <i class="fas fa-check-circle mr-1"></i>
+                                        {{ article.get_status_display }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Articles -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl shadow-indigo-500/10 border border-white/20 p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-newspaper text-white text-sm"></i>
+                        </div>
+                        Artikel Terkait
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {% for post in latest_articles|slice:":4" %}
+                        <a href="{{ post.get_absolute_url }}" class="group block bg-gray-50 hover:bg-white rounded-2xl p-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border border-transparent hover:border-indigo-100">
+                            <div class="flex gap-4">
+                                {% if post.featured_image %}
+                                <div class="flex-shrink-0">
+                                    <img src="{{ post.featured_image.url }}" 
+                                         alt="{{ post.title }}" 
+                                         class="w-20 h-20 object-cover rounded-xl shadow-md group-hover:shadow-lg transition-shadow">
+                                </div>
+                                {% endif %}
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-semibold text-gray-900 text-sm leading-snug mb-2 group-hover:text-indigo-600 transition-colors">
+                                        {{ post.title|truncatechars:60 }}
+                                    </h4>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span>{{ post.created_at|date:"d M Y" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% empty %}
+                        <div class="col-span-2 text-center py-8 text-gray-400">
+                            <i class="fas fa-file-alt text-4xl mb-4"></i>
+                            <p>Belum ada artikel terkait.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </main>
+
+            <!-- SIDEBAR (1/4) -->
+            <aside class="lg:col-span-1">
+                <!-- Latest Articles Widget -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl shadow-indigo-500/10 border border-white/20 p-6 mb-8 sticky top-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <div class="w-6 h-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-md flex items-center justify-center">
+                            <i class="fas fa-fire text-white text-xs"></i>
+                        </div>
+                        Artikel Terbaru
+                    </h3>
+                    <div class="space-y-4">
+                        {% for post in latest_articles|slice:":6" %}
+                        <a href="{{ post.get_absolute_url }}" class="group block hover:bg-gray-50 rounded-xl p-3 transition-all duration-300 hover:shadow-md hover:scale-[1.02] -mx-3">
+                            <div class="flex gap-3">
+                                {% if post.featured_image %}
+                                <div class="flex-shrink-0">
+                                    <img src="{{ post.featured_image.url }}" 
+                                         alt="{{ post.title }}" 
+                                         class="w-12 h-12 object-cover rounded-lg shadow-sm group-hover:shadow-md transition-shadow">
+                                </div>
+                                {% endif %}
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-gray-900 text-sm leading-tight mb-1 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                                        {{ post.title|truncatechars:50 }}
+                                    </h4>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ post.created_at|date:"d M Y" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% empty %}
+                        <div class="text-center py-6 text-gray-400">
+                            <i class="fas fa-inbox text-2xl mb-2"></i>
+                            <p class="text-sm">Belum ada artikel lain.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Newsletter Signup -->
+                <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl shadow-2xl p-6 text-white mb-8">
+                    <div class="text-center">
+                        <i class="fas fa-envelope text-3xl mb-4 opacity-80"></i>
+                        <h3 class="text-lg font-bold mb-2">Stay Updated</h3>
+                        <p class="text-sm opacity-90 mb-4">Dapatkan artikel terbaru langsung di inbox Anda</p>
+                        <form class="space-y-3">
+                            <input type="email" placeholder="Email Anda" class="w-full px-4 py-3 rounded-xl text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-white/50">
+                            <button type="submit" class="w-full bg-white text-indigo-600 font-semibold py-3 rounded-xl hover:bg-gray-50 transition-colors text-sm">
+                                Subscribe
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl shadow-indigo-500/10 border border-white/20 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-tags text-indigo-600"></i>
+                        Kategori
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for category in categories %}
+                        <a href="{% url 'category_detail' category.slug %}" class="px-3 py-1 bg-gray-100 hover:bg-indigo-100 text-gray-700 hover:text-indigo-700 rounded-full text-xs font-medium cursor-pointer transition-colors">
+                            {{ category.name }}
+                        </a>
+                        {% empty %}
+                        <span class="text-gray-400 text-xs">Belum ada kategori.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
